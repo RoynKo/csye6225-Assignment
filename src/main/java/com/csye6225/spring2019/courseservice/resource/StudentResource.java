@@ -12,6 +12,8 @@ public class StudentResource {
 
     StudentService ss = new StudentService();
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public List<StudentModel> getAll() {
         return ss.getAll();
     }
