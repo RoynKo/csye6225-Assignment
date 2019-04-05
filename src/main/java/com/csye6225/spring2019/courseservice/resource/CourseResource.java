@@ -9,7 +9,6 @@ import java.util.List;
 
 @Path("course")
 public class CourseResource {
-
     CourseService cs = new CourseService();
 
     @GET
@@ -44,6 +43,6 @@ public class CourseResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public CourseModel update(@PathParam("courseId") String courseId, CourseModel course) {
-        return cs.update(courseId, course);
+        return cs.update(course);
     }
 }

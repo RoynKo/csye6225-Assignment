@@ -9,7 +9,6 @@ import java.util.List;
 
 @Path("student")
 public class StudentResource {
-
     StudentService ss = new StudentService();
 
     @GET
@@ -44,6 +43,6 @@ public class StudentResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public StudentModel update(@PathParam("studentId") String studentId, StudentModel student) {
-        return ss.update(studentId, student);
+        return ss.update(student);
     }
 }

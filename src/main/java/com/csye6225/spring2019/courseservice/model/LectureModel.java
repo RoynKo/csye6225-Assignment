@@ -2,11 +2,7 @@ package com.csye6225.spring2019.courseservice.model;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class LectureModel {
-
     private String lectureId;
     private List<String> associatedMaterials;
     private String content;

@@ -1,28 +1,63 @@
 package com.csye6225.spring2019.courseservice.service;
 
-import com.csye6225.spring2019.courseservice.InMemoryDatabase;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDeleteExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.csye6225.spring2019.courseservice.model.Database;
+import com.csye6225.spring2019.courseservice.model.DynamoDBConnector;
 import com.csye6225.spring2019.courseservice.model.ProfessorModel;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProfessorService {
-    public List<ProfessorModel> getAll() {
-        return new ArrayList<>(InMemoryDatabase.professors.values());
+
+    static DynamoDBConnector dynamoDb;
+    DynamoDBMapper mapper;
+
+    public ProfessorService() {
+        dynamoDb = new DynamoDBConnector();
+        dynamoDb.init();
+        mapper = new DynamoDBMapper(dynamoDb.getClient());
     }
 
-    public ProfessorModel get(String profId) {
-        return InMemoryDatabase.professors.get(profId);
+    public ProfessorModel delete(String id) {
+        ProfessorModel pm = get(id);
+        mapper.delete(pm, new DynamoDBDeleteExpression());
+        return pm;
     }
 
-    public ProfessorModel delete(String profId) {
-        return InMemoryDatabase.professors.remove(profId);
+    public ProfessorModel get(String id) {
+        HashMap<String, AttributeValue> eav = new HashMap<>();
+        eav.put(":v1",  new AttributeValue().withS(id));
+
+        DynamoDBQueryExpression<ProfessorModel> queryExpression = new DynamoDBQueryExpression<ProfessorModel>()
+                .withIndexName("professorId-index")
+                .withKeyConditionExpression("professorId = :v1")
+                .withConsistentRead(false)
+                .withExpressionAttributeValues(eav);
+
+        List<ProfessorModel> list =  mapper.query(ProfessorModel.class, queryExpression);
+        if (list.size() == 0) return null;
+        return list.get(0);
     }
 
-    public ProfessorModel add(ProfessorModel professorModel) {
-        return InMemoryDatabase.professors.put(professorModel.getProfessorId(), professorModel);
+    public List<ProfessorModel> getAll(){
+        return mapper.scan(ProfessorModel.class, new DynamoDBScanExpression());
     }
 
-    public ProfessorModel update(String profId, ProfessorModel professor) {
-        return InMemoryDatabase.professors.put(profId, professor);
+    public ProfessorModel add(ProfessorModel pm) {
+        mapper.save(pm);
+        return pm;
+    }
+
+    public ProfessorModel update(ProfessorModel pm) {
+        delete(pm.getProfessorId());
+        mapper.save(pm);
+        return pm;
     }
 }
