@@ -10,6 +10,7 @@ import com.csye6225.spring2019.courseservice.model.DynamoDBConnector;
 import com.csye6225.spring2019.courseservice.model.StudentModel;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.SubscribeRequest;
+import com.amazonaws.regions.Regions;
 import com.csye6225.spring2019.courseservice.model.CourseModel;
 import java.util.HashMap;
 import java.util.List;
@@ -71,11 +72,11 @@ public class StudentService {
         CourseModel courseModel = cs.get(courseId);
         StudentModel studentModel = get(studentId);
 
-        //create a new SNS client and set endpoint
-        AmazonSNS snsClient = AmazonSNSClient.builder().withRegion("us-west-1").build();
         String topicArn = courseModel.getTopic();
-
         SubscribeRequest subRequest = new SubscribeRequest(topicArn, "email", studentModel.getEmailAddress());
+
+        //create a new SNS client and set endpoint
+        AmazonSNS snsClient = AmazonSNSClient.builder().withRegion(Regions.US_WEST_2).build();
         snsClient.subscribe(subRequest);
     }
 

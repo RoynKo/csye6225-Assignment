@@ -12,6 +12,7 @@ import com.csye6225.spring2019.courseservice.model.DynamoDBConnector;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.CreateTopicRequest;
 import com.amazonaws.services.sns.model.CreateTopicResult;
+import com.amazonaws.regions.Regions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,14 +54,13 @@ public class CourseService {
 
     public CourseModel add(CourseModel cm) {
         // create a new SNS client and set endpoint
-        AmazonSNS snsClient = AmazonSNSClient.builder().withRegion("us-west-1").build();
+        AmazonSNS snsClient = AmazonSNSClient.builder().withRegion(Regions.US_WEST_2).build();
 
         //create a new SNS topic
         CreateTopicRequest createTopicRequest = new CreateTopicRequest(cm.getCourseId());
         CreateTopicResult createTopicResult = snsClient.createTopic(createTopicRequest);
 
         cm.setTopic(createTopicResult.getTopicArn());
-
         mapper.save(cm);
         return cm;
     }
