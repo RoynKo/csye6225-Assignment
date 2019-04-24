@@ -13,6 +13,7 @@ public class StudentModel {
     private String joiningDate;
     private List<String> registeredCourses;
     private String department;
+    private String emailAddress;
 
     public StudentModel() {}
 
@@ -80,5 +81,14 @@ public class StudentModel {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    @DynamoDBAttribute(attributeName = "emailAddress")
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

@@ -8,6 +8,7 @@ public class AnnouncementModel {
     private String announcementId;
     private String announcementText;
     private String boardId;
+    private String courseId;
 
     public AnnouncementModel() {
 
@@ -48,5 +49,14 @@ public class AnnouncementModel {
 
     public void setBoardId(String boardId) {
         this.boardId = boardId;
+    }
+
+    @DynamoDBAttribute(attributeName = "courseId")
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 }

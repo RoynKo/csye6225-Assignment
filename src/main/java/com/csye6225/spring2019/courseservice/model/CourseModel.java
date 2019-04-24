@@ -13,6 +13,7 @@ public class CourseModel {
     private String department;
     private String boardId;
     private List<String> roster;
+    private String topic;
 
     public CourseModel() {
 
@@ -81,5 +82,14 @@ public class CourseModel {
 
     public void setRoster(List<String> roster) {
         this.roster = roster;
+    }
+
+    @DynamoDBAttribute(attributeName = "topic")
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 }

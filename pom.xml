@@ -6,7 +6,7 @@
     <groupId>com.csye6225.spring2019</groupId>
     <artifactId>courseservice</artifactId>
     <packaging>war</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>courseservice</name>
 
     <build>
@@ -75,6 +75,10 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-dynamodb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-sns</artifactId>
         </dependency>
     </dependencies>
 
